@@ -135,26 +135,41 @@ public class Main {
 
 
     public static void playerMove(char[][] gameBoard){
+        int move = -1;
+        boolean validInput = false;
 
-        System.out.println("Please make a move. (1-9)");
+        while (!validInput) {
+            System.out.println("Please make a move. (1-9)");
+            try {
+                move = input.nextInt();
+                if (move < 1 || move > 9) {
+                    throw new InputMismatchException("Invalid move. Please enter a number between 1 and 9.");
+                }
+                validInput = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number between 1 and 9.");
+                input.nextLine();
+            }
+        }
 
+        boolean result = isValidMove(move, gameBoard);
 
-        int move = input.nextInt();
-
-        boolean result = isValidMove(move,gameBoard);
-
-        while(!result){
+        while (!result) {
             System.out.println("Sorry! Invalid Move. Try again");
-            move = input.nextInt();
-            result = isValidMove(move,gameBoard);
+            try {
+                move = input.nextInt();
+                if (move < 1 || move > 9) {
+                    throw new InputMismatchException("Invalid move. Please enter a number between 1 and 9.");
+                }
+                result = isValidMove(move, gameBoard);
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number between 1 and 9.");
+                input.nextLine();
+            }
         }
 
         System.out.println("Player moved at position " + move);
-        updateBoard(move,1,gameBoard);
-
-
-    }
-
+        updateBoard(move, 1, gameBoard);
 
     public static boolean isValidMove(int move, char[][] gameboard){
 
